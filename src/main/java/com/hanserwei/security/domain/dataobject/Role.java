@@ -1,8 +1,11 @@
 package com.hanserwei.security.domain.dataobject;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+
 
 import java.time.Instant;
 import java.util.HashSet;
@@ -16,6 +19,8 @@ import java.util.UUID;
         @UniqueConstraint(name = "uk_sys_role_code", columnNames = "code")
     }
 )
+@Getter
+@Setter
 public class Role {
 
     @Id
@@ -24,12 +29,12 @@ public class Role {
     private UUID id;
 
     @Column(nullable = false, length = 64)
-    private String code; // 例如 ROLE_ADMIN / ROLE_USER（Spring Security惯例）
+    private String code;
 
     @Column(nullable = false, length = 64)
     private String name;
 
-    @Column(length = 255)
+    @Column()
     private String description;
 
     @CreationTimestamp
@@ -53,5 +58,4 @@ public class Role {
     )
     private Set<Permission> permissions = new HashSet<>();
 
-    // getter/setter 省略
 }

@@ -1,6 +1,8 @@
 package com.hanserwei.security.domain.dataobject;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -14,6 +16,8 @@ import java.util.UUID;
         @UniqueConstraint(name = "uk_sys_permission_code", columnNames = "code")
     }
 )
+@Getter
+@Setter
 public class Permission {
 
     @Id
@@ -45,5 +49,4 @@ public class Permission {
     @Column(nullable = false)
     private Instant updatedAt;
 
-    // getter/setter 省略
 }

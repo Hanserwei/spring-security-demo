@@ -1,6 +1,9 @@
 package com.hanserwei.security.domain.dataobject;
 
+import com.hanserwei.security.enums.AccountStatus;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -11,16 +14,18 @@ import java.util.UUID;
 
 @Entity
 @Table(
-    name = "sys_user",
-    indexes = {
-        @Index(name = "idx_sys_user_username", columnList = "username"),
-        @Index(name = "idx_sys_user_email", columnList = "email")
-    },
-    uniqueConstraints = {
-        @UniqueConstraint(name = "uk_sys_user_username", columnNames = "username"),
-        @UniqueConstraint(name = "uk_sys_user_email", columnNames = "email")
-    }
+        name = "sys_user",
+        indexes = {
+                @Index(name = "idx_sys_user_username", columnList = "username"),
+                @Index(name = "idx_sys_user_email", columnList = "email")
+        },
+        uniqueConstraints = {
+                @UniqueConstraint(name = "uk_sys_user_username", columnNames = "username"),
+                @UniqueConstraint(name = "uk_sys_user_email", columnNames = "email")
+        }
 )
+@Getter
+@Setter
 public class User {
 
     @Id
@@ -32,7 +37,7 @@ public class User {
     private String username;
 
     @Column(nullable = false, length = 120)
-    private String password; // 存BCrypt后的hash
+    private String password;
 
     @Column(length = 120)
     private String email;
@@ -77,16 +82,15 @@ public class User {
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
-        name = "sys_user_role",
-        joinColumns = @JoinColumn(name = "user_id", columnDefinition = "uuid"),
-        inverseJoinColumns = @JoinColumn(name = "role_id", columnDefinition = "uuid"),
-        uniqueConstraints = @UniqueConstraint(name = "uk_user_role", columnNames = {"user_id", "role_id"}),
-        indexes = {
-            @Index(name = "idx_user_role_user", columnList = "user_id"),
-            @Index(name = "idx_user_role_role", columnList = "role_id")
-        }
+            name = "sys_user_role",
+            joinColumns = @JoinColumn(name = "user_id", columnDefinition = "uuid"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", columnDefinition = "uuid"),
+            uniqueConstraints = @UniqueConstraint(name = "uk_user_role", columnNames = {"user_id", "role_id"}),
+            indexes = {
+                    @Index(name = "idx_user_role_user", columnList = "user_id"),
+                    @Index(name = "idx_user_role_role", columnList = "role_id")
+            }
     )
     private Set<Role> roles = new HashSet<>();
 
-    // getter/setter 省略：建议用 Lombok @Getter/@Setter
 }
